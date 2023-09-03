@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "23956385184",
+    "project_id": "tutionnotesaplication",
+    "storage_bucket": "tutionnotesaplication.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:23956385184:android:f0a4cf017f167e26c548c5",
+        "android_client_info": {
+          "package_name": "com.guruprasad.tutionnotesaplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "23956385184-mr47ebvk8i0m83cbpt8ddqdh0953ursm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8oKfzPacKAR3eIWcZPcIYVZp7E2zRCXg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "23956385184-mr47ebvk8i0m83cbpt8ddqdh0953ursm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
