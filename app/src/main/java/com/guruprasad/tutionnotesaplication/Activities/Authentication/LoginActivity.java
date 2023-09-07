@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -22,7 +23,13 @@ public class LoginActivity extends AppCompatActivity {
 
     ActivityLoginBinding binding ;
 
+    public static final String EMAIL = "email";
+    public static final String SHAREDPREF = "sharedpref";
+    public static final String PASSWORD = "password";
+
     FirebaseAuth auth ;
+    private String mail ;
+    private String pass ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +38,10 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         auth = FirebaseAuth.getInstance();
+
+        loadData();
+        binding.etEmail.setText(mail);
+        binding.etPassword.setText(pass);
 
         binding.btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,6 +65,12 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    private void loadData() {
+        SharedPreferences sharedPreferences = getSharedPreferences(SHAREDPREF,MODE_PRIVATE);
+        mail = sharedPreferences.getString(EMAIL,"");
+        pass = sharedPreferences.getString(PASSWORD,"");
+    }
+
     private void statusCheck(String email , String password) {
 
         if (TextUtils.isEmpty(email))
@@ -67,7 +84,19 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
+        savedata(email,password);
+
         login(email,password);
+    }
+
+    private void savedata(String email, String password) {
+
+        SharedPreferences sharedPreferences = getSharedPreferences(SHAREDPREF,MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(EMAIL,email);
+        editor.putString(PASSWORD,password);
+        editor.apply();
+
     }
 
     private void login(String email , String password) {

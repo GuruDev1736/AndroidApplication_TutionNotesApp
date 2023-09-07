@@ -32,6 +32,9 @@
         android:theme="@style/Theme.TutionNotesAplication"
         tools:targetApi="31">
         <activity
+            android:name=".Activities.ui.CreateNote.CreateNoteActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activities.NavigationActivity"
             android:exported="false"
             android:label="@string/title_activity_navigation" />
