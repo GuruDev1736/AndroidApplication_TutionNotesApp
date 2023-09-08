@@ -1,18 +1,29 @@
 package com.guruprasad.tutionnotesaplication.Activities.ui.CreateNote;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
+import android.text.TextUtils;
 import android.view.View;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.ktx.Firebase;
+import com.guruprasad.tutionnotesaplication.Activities.NavigationActivity;
 import com.guruprasad.tutionnotesaplication.Adapters.NoteAdapter;
+import com.guruprasad.tutionnotesaplication.Constants;
+import com.guruprasad.tutionnotesaplication.Models.NoteDataModel;
 import com.guruprasad.tutionnotesaplication.Models.NoteModel;
 import com.guruprasad.tutionnotesaplication.R;
 import com.guruprasad.tutionnotesaplication.databinding.ActivityCreateNoteBinding;
@@ -30,14 +41,21 @@ public class CreateNoteActivity extends AppCompatActivity {
     ActivityCreateNoteBinding binding ;
     List<NoteModel> datalist = new ArrayList<>();
     NoteAdapter adapter ;
+
+    FirebaseDatabase database ;
+    FirebaseAuth auth ;
     private String filename ;
     private Uri file ;
+    private int count ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityCreateNoteBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        database = FirebaseDatabase.getInstance();
+        auth = FirebaseAuth.getInstance();
 
         binding.actionbar.back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,10 +72,12 @@ public class CreateNoteActivity extends AppCompatActivity {
                         .withListener(new MultiplePermissionsListener() {
                             @Override
                             public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
+
                                 Intent intent = new Intent();
                                 intent.setType("*/*");
                                 intent.setAction(Intent.ACTION_GET_CONTENT);
                                 startActivityForResult(Intent.createChooser(intent,"Select the File."),101);
+
                             }
 
                             @Override
@@ -70,7 +90,54 @@ public class CreateNoteActivity extends AppCompatActivity {
 
         binding.recyclerview.setLayoutManager(new LinearLayoutManager(this));
         adapter = new NoteAdapter(this,datalist);
+        count = adapter.getItemCount();
         binding.recyclerview.setAdapter(adapter);
+
+
+        binding.create.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                ProgressDialog pd = Constants.progress_dialog(CreateNoteActivity.this,"Please Wait","Uploading your note");
+
+                String title = binding.title.getText().toString();
+                String note = binding.note.getText().toString();
+
+                if (TextUtils.isEmpty(title))
+                {
+                    Constants.error(CreateNoteActivity.this,"Title is necessary before creating the note");
+                    return;
+                }
+                if (TextUtils.isEmpty(note))
+                {
+                    Constants.error(CreateNoteActivity.this,"Note is null please enter the input");
+                    return;
+                }
+
+                pd.show();
+                NoteDataModel model  = new NoteDataModel(title,note);
+                database.getReference().child("Notes").child(auth.getCurrentUser().getUid()).child(database.getReference().push().getKey()).setValue(model)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful())
+                                {
+                                    Constants.success(CreateNoteActivity.this,"Note Created Successfully");
+                                    pd.dismiss();
+                                    startActivity(new Intent(CreateNoteActivity.this,NavigationActivity.class));
+                                    finish();
+                                }
+                                else
+                                {
+                                    Constants.error(CreateNoteActivity.this,"Failed to create Note : "+task.getException().getMessage());
+                                    pd.dismiss();
+                                }
+                            }
+                        });
+            }
+        });
+
+
     }
 
     @Override
@@ -86,6 +153,10 @@ public class CreateNoteActivity extends AppCompatActivity {
            }
             datalist.add(new NoteModel(filename,file));
             adapter.notifyDataSetChanged();
+        }
+        else
+        {
+            Constants.error(CreateNoteActivity.this,"Error : ");
         }
     }
 
@@ -105,7 +176,6 @@ public class CreateNoteActivity extends AppCompatActivity {
         }
 
         if (fileName == null) {
-            // If unable to get the file name from content resolver, try parsing the Uri
             fileName = uri.getLastPathSegment();
         }
 

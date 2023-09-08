@@ -72,9 +72,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.onviewholder> 
             @Override
             public void onClick(View view) {
 
-
-
-
             }
         });
 

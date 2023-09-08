@@ -30,5 +30,14 @@ public class NavigationActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//    }
 }
