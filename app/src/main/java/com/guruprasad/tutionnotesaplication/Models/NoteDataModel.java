@@ -4,20 +4,24 @@ import java.util.List;
 
 public class NoteDataModel {
 
-    private String title , note , link1 , link2 , link3 , link4 ;
+    private String title , note , UniqueID , userid , link1 , link2 , link3 , link4 ;
 
-    public NoteDataModel(String title, String note, String link1, String link2, String link3, String link4) {
+    public NoteDataModel(String title, String note, String uniqueID, String userid, String link1, String link2, String link3, String link4) {
         this.title = title;
         this.note = note;
+        UniqueID = uniqueID;
+        this.userid = userid;
         this.link1 = link1;
         this.link2 = link2;
         this.link3 = link3;
         this.link4 = link4;
     }
 
-    public NoteDataModel(String title, String note) {
+    public NoteDataModel(String title, String note, String uniqueID, String userid) {
         this.title = title;
         this.note = note;
+        UniqueID = uniqueID;
+        this.userid = userid;
     }
 
     public String getTitle() {
@@ -34,6 +38,22 @@ public class NoteDataModel {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public String getUniqueID() {
+        return UniqueID;
+    }
+
+    public void setUniqueID(String uniqueID) {
+        UniqueID = uniqueID;
+    }
+
+    public String getUserid() {
+        return userid;
+    }
+
+    public void setUserid(String userid) {
+        this.userid = userid;
     }
 
     public String getLink1() {

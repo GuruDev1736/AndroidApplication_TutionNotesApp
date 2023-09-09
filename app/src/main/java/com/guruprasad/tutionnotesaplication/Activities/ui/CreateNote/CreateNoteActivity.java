@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.provider.OpenableColumns;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -35,6 +36,7 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class CreateNoteActivity extends AppCompatActivity {
 
@@ -47,6 +49,8 @@ public class CreateNoteActivity extends AppCompatActivity {
     private String filename ;
     private Uri file ;
     private int count ;
+    private String UniqueKey ;
+    private String UserId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +60,8 @@ public class CreateNoteActivity extends AppCompatActivity {
 
         database = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
+        UniqueKey = UUID.randomUUID().toString();
+        UserId = auth.getCurrentUser().getUid();
 
         binding.actionbar.back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,11 +79,19 @@ public class CreateNoteActivity extends AppCompatActivity {
                             @Override
                             public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
 
+                                String title = binding.title.getText().toString();
+                                String content = binding.note.getText().toString();
+
+                                if (title.isEmpty() || content.isEmpty())
+                                {
+                                    Toast.makeText(CreateNoteActivity.this, "Please Upload your note first", Toast.LENGTH_SHORT).show();
+                                }
+                                else {
                                 Intent intent = new Intent();
                                 intent.setType("*/*");
                                 intent.setAction(Intent.ACTION_GET_CONTENT);
                                 startActivityForResult(Intent.createChooser(intent,"Select the File."),101);
-
+                                }
                             }
 
                             @Override
@@ -115,17 +129,17 @@ public class CreateNoteActivity extends AppCompatActivity {
                 }
 
                 pd.show();
-                NoteDataModel model  = new NoteDataModel(title,note);
-                database.getReference().child("Notes").child(auth.getCurrentUser().getUid()).child(database.getReference().push().getKey()).setValue(model)
+
+                NoteDataModel model  = new NoteDataModel(title,note,UniqueKey,UserId);
+                database.getReference().child("Notes").child(UserId).child(UniqueKey).setValue(model)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful())
                                 {
                                     Constants.success(CreateNoteActivity.this,"Note Created Successfully");
+                                    binding.create.setVisibility(View.INVISIBLE);
                                     pd.dismiss();
-                                    startActivity(new Intent(CreateNoteActivity.this,NavigationActivity.class));
-                                    finish();
                                 }
                                 else
                                 {
@@ -151,13 +165,10 @@ public class CreateNoteActivity extends AppCompatActivity {
            {
                filename = getFileName(file);
            }
-            datalist.add(new NoteModel(filename,file));
+            datalist.add(new NoteModel(filename,binding.title.getText().toString(),binding.note.getText().toString(),UniqueKey,UserId,file));
             adapter.notifyDataSetChanged();
         }
-        else
-        {
-            Constants.error(CreateNoteActivity.this,"Error : ");
-        }
+
     }
 
     private String getFileName(Uri uri) {
