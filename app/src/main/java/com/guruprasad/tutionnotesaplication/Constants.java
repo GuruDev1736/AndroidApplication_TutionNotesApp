@@ -9,7 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import java.lang.reflect.Method;
 
 import es.dmoral.toasty.Toasty;
 
@@ -55,15 +59,16 @@ public class Constants {
         return null;
     }
 
-//    public static MaterialAlertDialogBuilder dialog(Context context ,String title , String message)
-//    {
-//        new MaterialAlertDialogBuilder(context,R.style.RoundShapeTheme)
-//                .setTitle(title)
-//                .setIcon(R.drawable.logo_1)
-//                .setMessage(message)
-//                .setCancelable(false);
-//        return null;
-//    }
+    public static MaterialAlertDialogBuilder dialog(Context context , String title , String message)
+    {
+      MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context,R.style.RoundShapeTheme)
+                .setTitle(title)
+                .setIcon(R.mipmap.notelogo)
+                .setMessage(message)
+                .setCancelable(false);
+      
+        return builder;
+    }
 
 
 

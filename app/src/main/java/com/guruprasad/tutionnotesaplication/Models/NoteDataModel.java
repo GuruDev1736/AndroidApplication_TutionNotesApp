@@ -4,17 +4,14 @@ import java.util.List;
 
 public class NoteDataModel {
 
-    private String title , note , UniqueID , userid , link1 , link2 , link3 , link4 ;
+    private String title , note , UniqueID , userid , link ,fileKey , filename ;
 
-    public NoteDataModel(String title, String note, String uniqueID, String userid, String link1, String link2, String link3, String link4) {
+    public NoteDataModel(String title, String note, String uniqueID, String userid, String link) {
         this.title = title;
         this.note = note;
         UniqueID = uniqueID;
         this.userid = userid;
-        this.link1 = link1;
-        this.link2 = link2;
-        this.link3 = link3;
-        this.link4 = link4;
+        this.link = link;
     }
 
     public NoteDataModel(String title, String note, String uniqueID, String userid) {
@@ -24,8 +21,21 @@ public class NoteDataModel {
         this.userid = userid;
     }
 
+    public NoteDataModel(String title, String note, String uniqueID, String userid, String link, String fileKey, String filename) {
+        this.title = title;
+        this.note = note;
+        UniqueID = uniqueID;
+        this.userid = userid;
+        this.link = link;
+        this.fileKey = fileKey;
+        this.filename = filename;
+    }
+
     public String getTitle() {
         return title;
+    }
+
+    public NoteDataModel() {
     }
 
     public void setTitle(String title) {
@@ -56,35 +66,27 @@ public class NoteDataModel {
         this.userid = userid;
     }
 
-    public String getLink1() {
-        return link1;
+    public String getLink() {
+        return link;
     }
 
-    public void setLink1(String link1) {
-        this.link1 = link1;
+    public void setLink(String link) {
+        this.link = link;
     }
 
-    public String getLink2() {
-        return link2;
+    public String getFileKey() {
+        return fileKey;
     }
 
-    public void setLink2(String link2) {
-        this.link2 = link2;
+    public void setFileKey(String fileKey) {
+        this.fileKey = fileKey;
     }
 
-    public String getLink3() {
-        return link3;
+    public String getFilename() {
+        return filename;
     }
 
-    public void setLink3(String link3) {
-        this.link3 = link3;
-    }
-
-    public String getLink4() {
-        return link4;
-    }
-
-    public void setLink4(String link4) {
-        this.link4 = link4;
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 }

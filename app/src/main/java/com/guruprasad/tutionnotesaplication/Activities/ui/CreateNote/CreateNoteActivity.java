@@ -51,6 +51,7 @@ public class CreateNoteActivity extends AppCompatActivity {
     private int count ;
     private String UniqueKey ;
     private String UserId;
+    private String filepath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,11 +85,11 @@ public class CreateNoteActivity extends AppCompatActivity {
 
                                 if (title.isEmpty() || content.isEmpty())
                                 {
-                                    Toast.makeText(CreateNoteActivity.this, "Please Upload your note first", Toast.LENGTH_SHORT).show();
+                                    Constants.error(CreateNoteActivity.this,"Please upload your note first");
                                 }
                                 else {
                                 Intent intent = new Intent();
-                                intent.setType("*/*");
+                                intent.setType("application/pdf");
                                 intent.setAction(Intent.ACTION_GET_CONTENT);
                                 startActivityForResult(Intent.createChooser(intent,"Select the File."),101);
                                 }
@@ -163,12 +164,22 @@ public class CreateNoteActivity extends AppCompatActivity {
 
            if (file!=null)
            {
-               filename = getFileName(file);
+               filename = truncateString(getFileName(file),10);
+               filepath = file.getPath();
+
            }
-            datalist.add(new NoteModel(filename,binding.title.getText().toString(),binding.note.getText().toString(),UniqueKey,UserId,file));
+            datalist.add(new NoteModel(filename,binding.title.getText().toString(),binding.note.getText().toString(),UniqueKey,UserId,filepath,file));
             adapter.notifyDataSetChanged();
         }
 
+    }
+
+    public static String truncateString(String input, int maxLength) {
+        if (input.length() <= maxLength) {
+            return input;
+        } else {
+            return input.substring(0, maxLength - 1) + "...";
+        }
     }
 
     private String getFileName(Uri uri) {

@@ -3,6 +3,7 @@ package com.guruprasad.tutionnotesaplication.Adapters;
 import static com.google.android.gms.common.wrappers.Wrappers.packageManager;
 
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -30,20 +31,22 @@ import com.guruprasad.tutionnotesaplication.Activities.ui.CreateNote.CreateNoteA
 import com.guruprasad.tutionnotesaplication.Constants;
 import com.guruprasad.tutionnotesaplication.Models.NoteModel;
 import com.guruprasad.tutionnotesaplication.R;
+import com.rajat.pdfviewer.PdfViewerActivity;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.onviewholder> {
     private Context context ;
     private List<NoteModel> model ;
 
+    private String UniqueKey;
     FirebaseDatabase database = FirebaseDatabase.getInstance() ;
     FirebaseStorage storage =  FirebaseStorage.getInstance();
 
     FirebaseAuth auth = FirebaseAuth.getInstance();
-
-    private String linkNo ;
-
 
     public NoteAdapter(Context context, List<NoteModel> model) {
         this.context = context;
@@ -65,27 +68,8 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.onviewholder> 
         NoteModel noteModel = model.get(position);
 
         holder.filename.setText(noteModel.getFilename());
+        holder.see.setVisibility(View.INVISIBLE);
 
-
-        holder.see.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (noteModel.getFile()!=null)
-                {
-                   Uri fileuri = noteModel.getFile();
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setDataAndType(fileuri,"application/*");
-                    if (intent.resolveActivity(context.getPackageManager()) !=null)
-                    {
-                        context.startActivity(intent);
-                    }
-                    else
-                    {
-                        Constants.error(context,"No application is available to view the file");
-                    }
-                }
-            }
-        });
 
         holder.upload.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,7 +100,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.onviewholder> 
                         Constants.error(context,"Reference key is null");
                     }
 
-                    uploaddata(noteModel.getFile() , getItemCount(), noteModel.getUserId(), noteModel.getUniqueKey() , holder);
+                    uploaddata(noteModel.getFile() , getItemCount(), noteModel.getUserId(), noteModel.getUniqueKey() , holder , noteModel.getFilename());
             }
         });
 
@@ -130,7 +114,9 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.onviewholder> 
 
     }
 
-    private void uploaddata(Uri file , int size , String userid , String referenceId , onviewholder holder) {
+    private void uploaddata(Uri file , int size , String userid , String referenceId , onviewholder holder , String filename) {
+
+        UniqueKey = UUID.randomUUID().toString();
 
 
         ProgressDialog pd = Constants.progress_dialog(context,"Please Wait","Uploading your attachment");
@@ -144,24 +130,13 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.onviewholder> 
                     @Override
                     public void onSuccess(Uri uri) {
 
-                        if (size==1)
-                        {
-                            linkNo = "link1";
-                        }
-                        if (size==2)
-                        {
-                            linkNo = "link2";
-                        }
-                        if (size==3)
-                        {
-                            linkNo = "link3";
-                        }
-                        if (size==4)
-                        {
-                            linkNo="link4";
-                        }
 
-                        database.getReference().child("Notes").child(userid).child(referenceId).child(linkNo).setValue(uri.toString())
+                        HashMap<String , String> map = new HashMap<>();
+                        map.put("link",uri.toString());
+                        map.put("fileKey",UniqueKey);
+                        map.put("filename",filename);
+
+                        database.getReference().child("Notes").child(userid).child(referenceId).child("PDF").child(UniqueKey).setValue(map)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void unused) {

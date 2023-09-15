@@ -66,5 +66,11 @@ dependencies {
     implementation("com.airbnb.android:lottie:6.1.0")
     implementation ("com.karumi:dexter:6.2.3")
     implementation ("com.github.GrenderG:Toasty:1.5.2")
+    implementation ("com.firebaseui:firebase-ui-database:8.0.2")
+
+    // pdf viewer
+    implementation ("com.github.afreakyelf:Pdf-Viewer:v1.0.7")
+
+
 
 }

@@ -4,7 +4,7 @@ import android.net.Uri;
 
 public class NoteModel {
 
-    private String filename , title , content, uniqueKey , userId;
+    private String filename , title , content, uniqueKey , userId , filepath;
     private Uri file;
 
     public NoteModel(String filename, Uri file) {
@@ -27,6 +27,18 @@ public class NoteModel {
         this.userId = userId;
         this.file = file;
     }
+
+    public NoteModel(String filename, String title, String content, String uniqueKey, String userId, String filepath, Uri file) {
+        this.filename = filename;
+        this.title = title;
+        this.content = content;
+        this.uniqueKey = uniqueKey;
+        this.userId = userId;
+        this.filepath = filepath;
+        this.file = file;
+    }
+
+
 
     public NoteModel() {
     }
@@ -77,5 +89,13 @@ public class NoteModel {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getFilepath() {
+        return filepath;
+    }
+
+    public void setFilepath(String filepath) {
+        this.filepath = filepath;
     }
 }
