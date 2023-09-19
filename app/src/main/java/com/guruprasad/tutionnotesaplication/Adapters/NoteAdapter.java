@@ -122,7 +122,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.onviewholder> 
         ProgressDialog pd = Constants.progress_dialog(context,"Please Wait","Uploading your attachment");
         pd.show();
 
-        final StorageReference reference= storage.getReference().child("Attachments").child(auth.getCurrentUser().getUid());
+        final StorageReference reference= storage.getReference().child("Attachments").child(auth.getCurrentUser().getUid()).child(filename);
         reference.putFile(file).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {

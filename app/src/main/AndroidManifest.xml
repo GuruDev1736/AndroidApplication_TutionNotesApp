@@ -29,8 +29,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/notelogo"
         android:supportsRtl="true"
+        android:enableOnBackInvokedCallback="true"
         android:theme="@style/Theme.TutionNotesAplication"
-        tools:targetApi="31">
+        tools:targetApi="tiramisu">
         <activity
             android:name=".Activities.PDFRenderActivity"
             android:exported="false" />

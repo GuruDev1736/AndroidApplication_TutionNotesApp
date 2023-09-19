@@ -48,7 +48,7 @@ public class NotesRecyclerViewAdapter extends FirebaseRecyclerAdapter<NoteDataMo
     @Override
     protected void onBindViewHolder(@NonNull onViewHolder holder, int position, @NonNull NoteDataModel model) {
 
-            String title = truncateString(model.getTitle(),10);
+            String title = truncateString(model.getTitle(),15);
             holder.title.setText(title);
 
             holder.see.setOnClickListener(new View.OnClickListener() {
