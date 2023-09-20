@@ -24,14 +24,17 @@
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
+        android:enableOnBackInvokedCallback="true"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/notelogo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/notelogo"
         android:supportsRtl="true"
-        android:enableOnBackInvokedCallback="true"
         android:theme="@style/Theme.TutionNotesAplication"
         tools:targetApi="tiramisu">
+        <activity
+            android:name=".Activities.ui.CreateNote.EditNoteRecyclerActivity"
+            android:exported="false" />
         <activity
             android:name=".Activities.PDFRenderActivity"
             android:exported="false" />

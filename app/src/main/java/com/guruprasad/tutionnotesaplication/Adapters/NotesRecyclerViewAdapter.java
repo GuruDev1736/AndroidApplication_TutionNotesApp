@@ -3,7 +3,6 @@ package com.guruprasad.tutionnotesaplication.Adapters;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,17 +20,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
-import com.google.android.play.integrity.internal.e;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
-import com.guruprasad.tutionnotesaplication.Activities.ui.CreateNote.CreateNoteActivity;
 import com.guruprasad.tutionnotesaplication.Activities.ui.CreateNote.EditNoteActivity;
 import com.guruprasad.tutionnotesaplication.Activities.ui.CreateNote.SeeNoteActivity;
 import com.guruprasad.tutionnotesaplication.Constants;
 import com.guruprasad.tutionnotesaplication.Models.NoteDataModel;
 import com.guruprasad.tutionnotesaplication.R;
-
-import kotlinx.coroutines.channels.ProduceKt;
 
 public class NotesRecyclerViewAdapter extends FirebaseRecyclerAdapter<NoteDataModel,NotesRecyclerViewAdapter.onViewHolder> {
 
@@ -64,6 +59,7 @@ public class NotesRecyclerViewAdapter extends FirebaseRecyclerAdapter<NoteDataMo
                 @Override
                 public void onClick(View view) {
                     Intent editNoteIntent = new Intent(context, EditNoteActivity.class);
+                    editNoteIntent.putExtra("noteId",model.getUniqueID());
                     context.startActivity(editNoteIntent);
                 }
             });

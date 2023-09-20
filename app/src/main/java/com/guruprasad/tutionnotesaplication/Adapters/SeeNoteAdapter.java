@@ -32,7 +32,7 @@ public class SeeNoteAdapter extends FirebaseRecyclerAdapter<NoteDataModel,SeeNot
 
         if (model!=null)
         {
-            holder.title.setText(model.getFilename());
+            holder.title.setText(truncateString(model.getFilename(),15));
             holder.edit.setVisibility(View.INVISIBLE);
             holder.delete.setVisibility(View.INVISIBLE);
 
@@ -53,6 +53,15 @@ public class SeeNoteAdapter extends FirebaseRecyclerAdapter<NoteDataModel,SeeNot
             });
         }
     }
+
+    public static String truncateString(String input, int maxLength) {
+        if (input.length() <= maxLength) {
+            return input;
+        } else {
+            return input.substring(0, maxLength - 1) + "...";
+        }
+    }
+
 
     @NonNull
     @Override

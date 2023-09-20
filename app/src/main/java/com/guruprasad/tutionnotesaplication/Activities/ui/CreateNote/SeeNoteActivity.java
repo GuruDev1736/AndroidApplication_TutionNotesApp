@@ -67,7 +67,7 @@ public class SeeNoteActivity extends AppCompatActivity {
 
                     NoteDataModel model = snapshot.getValue(NoteDataModel.class);
 
-                    if (model!=null)
+                    if (binding!=null && model!=null)
                     {
                         pd.dismiss();
 
@@ -97,14 +97,14 @@ public class SeeNoteActivity extends AppCompatActivity {
             @Override
             public void onDataChanged() {
                 super.onDataChanged();
-                binding.progressbar.setVisibility(View.INVISIBLE);
+                binding.progressbar.setVisibility(View.GONE);
             }
 
             @Override
             public void onError(@NonNull DatabaseError error) {
                 super.onError(error);
                 Constants.error(SeeNoteActivity.this,"Error : "+error.getMessage());
-                binding.progressbar.setVisibility(View.INVISIBLE);
+                binding.progressbar.setVisibility(View.GONE);
             }
         };
         binding.recyclerview.setAdapter(adapter);
