@@ -12,11 +12,14 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -169,6 +172,44 @@ public class EditNoteActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                String title = binding.title.getText().toString();
+                String note = binding.note.getText().toString();
+
+                if (TextUtils.isEmpty(title))
+                {
+                    binding.title.setError("Title should not be empty");
+                    return;
+                }
+                if (TextUtils.isEmpty(note))
+                {
+                    binding.note.setError("Note should not be empty");
+                    return;
+                }
+
+                ProgressDialog pd = Constants.progress_dialog(EditNoteActivity.this,"Please Wait","Updating note...");
+                pd.show();
+
+                HashMap<String,Object> map = new HashMap<>();
+                map.put("title",title);
+                map.put("note",note);
+
+
+                database.getReference().child("Notes").child(auth.getCurrentUser().getUid()).child(noteId).updateChildren(map)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful())
+                                {
+                                    Constants.success(EditNoteActivity.this,"Note updated successfully");
+                                    pd.dismiss();
+                                }
+                                else
+                                {
+                                    Constants.error(EditNoteActivity.this,"Failed to update note : "+task.getException().getMessage());
+                                    pd.dismiss();
+                                }
+                            }
+                        });
             }
         });
 
