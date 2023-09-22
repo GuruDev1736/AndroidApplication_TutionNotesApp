@@ -33,6 +33,15 @@
         android:theme="@style/Theme.TutionNotesAplication"
         tools:targetApi="tiramisu">
         <activity
+            android:name=".Activities.ui.ChatBot.MenuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.ui.ChatBot.ImageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.ui.ChatBot.ChatActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activities.ui.CreateNote.EditNoteRecyclerActivity"
             android:exported="false" />
         <activity

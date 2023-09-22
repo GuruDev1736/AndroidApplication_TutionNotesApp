@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Activities.ui.ChatBot.ChatActivity">
+
+
+    <include
+        android:id="@+id/actionbar"
+        layout="@layout/create_note_actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/actionbar"
+        android:layout_above="@id/idLLMessage" />
+
+    <LinearLayout
+        android:id="@+id/idLLMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:orientation="horizontal"
+        android:weightSum="5">
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            app:boxCornerRadiusBottomEnd="10dp"
+            app:boxCornerRadiusBottomStart="10dp"
+            app:boxCornerRadiusTopEnd="10dp"
+            app:boxCornerRadiusTopStart="10dp"
+            app:boxStrokeColor="#00E5FF"
+            app:endIconMode="clear_text"
+            app:hintTextColor="@color/primary">
+
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter Your Query"
+                android:inputType="none|text|textCapWords|textUri|textMultiLine"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--button to send message-->
+        <ImageButton
+            android:id="@+id/send"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:clickable="true"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_weight="1"
+            android:layout_marginStart="20dp"
+            android:background="@color/purple_200"
+            android:src="@android:drawable/ic_menu_send"
+            android:backgroundTint="@color/primary"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

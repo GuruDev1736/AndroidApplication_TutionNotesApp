@@ -1,5 +1,6 @@
 package com.guruprasad.tutionnotesaplication.Activities.ui.ChatBot;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,22 @@ public class ChatBotFragment extends Fragment {
 
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        binding.findAnswer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(view.getContext(),ChatActivity.class));
+            }
+        });
+
+
+        binding.generateImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(view.getContext(),ImageActivity.class));
+            }
+        });
+
 
 
         return root;
