@@ -18,6 +18,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.guruprasad.tutionnotesaplication.Adapters.SeeNoteAdapter;
 import com.guruprasad.tutionnotesaplication.Constants;
+import com.guruprasad.tutionnotesaplication.CustomDialog;
 import com.guruprasad.tutionnotesaplication.Models.NoteDataModel;
 import com.guruprasad.tutionnotesaplication.R;
 import com.guruprasad.tutionnotesaplication.databinding.ActivitySeeNoteBinding;
@@ -40,8 +41,9 @@ public class SeeNoteActivity extends AppCompatActivity {
         auth= FirebaseAuth.getInstance();
 
 
-        ProgressDialog pd = Constants.progress_dialog(SeeNoteActivity.this,"Please Wait","Fetching Data...");
-        pd.show();
+        CustomDialog dialog = new CustomDialog(SeeNoteActivity.this);
+       // dialog.title("Loading Data");
+        dialog.show();
 
         binding.actionbar.back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,7 +71,7 @@ public class SeeNoteActivity extends AppCompatActivity {
 
                     if (binding!=null && model!=null)
                     {
-                        pd.dismiss();
+                        dialog.dismiss();
 
                     binding.title.setText(model.getTitle());
                     binding.note.setText(model.getNote());
@@ -80,7 +82,7 @@ public class SeeNoteActivity extends AppCompatActivity {
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
                     Constants.error(SeeNoteActivity.this,"Error : "+error.getMessage());
-                    pd.dismiss();
+                    dialog.dismiss();
                 }
             });
 

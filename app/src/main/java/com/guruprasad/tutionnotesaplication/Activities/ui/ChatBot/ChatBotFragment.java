@@ -5,37 +5,20 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-
-import com.guruprasad.tutionnotesaplication.databinding.FragmentDashboardBinding;
+import com.guruprasad.tutionnotesaplication.databinding.FragmentchatbotBinding;
 
 public class ChatBotFragment extends Fragment {
 
-    private FragmentDashboardBinding binding;
+    private FragmentchatbotBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
 
-        binding = FragmentDashboardBinding.inflate(inflater, container, false);
+        binding = FragmentchatbotBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
-        binding.findAnswer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(view.getContext(),ChatActivity.class));
-            }
-        });
-
-
-        binding.generateImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(view.getContext(),ImageActivity.class));
-            }
-        });
 
 
 

@@ -29,6 +29,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.guruprasad.tutionnotesaplication.Activities.ui.CreateNote.CreateNoteActivity;
 import com.guruprasad.tutionnotesaplication.Constants;
+import com.guruprasad.tutionnotesaplication.CustomDialog;
 import com.guruprasad.tutionnotesaplication.Models.NoteModel;
 import com.guruprasad.tutionnotesaplication.R;
 import com.rajat.pdfviewer.PdfViewerActivity;
@@ -119,8 +120,9 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.onviewholder> 
         UniqueKey = UUID.randomUUID().toString();
 
 
-        ProgressDialog pd = Constants.progress_dialog(context,"Please Wait","Uploading your attachment");
-        pd.show();
+        CustomDialog dialog = new CustomDialog(context);
+       // dialog.title("Uploading Attachment");
+        dialog.show();
 
         final StorageReference reference= storage.getReference().child("Attachments").child(auth.getCurrentUser().getUid()).child(filename);
         reference.putFile(file).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -141,7 +143,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.onviewholder> 
                                     @Override
                                     public void onSuccess(Void unused) {
                                         Constants.success(context,"File Uploaded Successfully");
-                                        pd.dismiss();
+                                        dialog.dismiss();
                                         holder.upload.setVisibility(View.INVISIBLE);
                                         holder.remove.setVisibility(View.INVISIBLE);
                                     }
@@ -149,7 +151,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.onviewholder> 
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
                                         Constants.error(context,"Unable to upload file : "+e.getMessage());
-                                        pd.dismiss();
+                                        dialog.dismiss();
                                     }
                                 });
 
@@ -158,7 +160,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.onviewholder> 
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Constants.error(context,"Unable to upload file : "+e.getMessage());
-                        pd.dismiss();
+                        dialog.dismiss();
                     }
                 });
             }
@@ -166,7 +168,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.onviewholder> 
             @Override
             public void onFailure(@NonNull Exception e) {
                 Constants.error(context,"Unable to upload file : "+e.getMessage());
-                pd.dismiss();
+                dialog.dismiss();
             }
         });
 

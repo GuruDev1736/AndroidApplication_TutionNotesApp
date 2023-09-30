@@ -16,6 +16,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.guruprasad.tutionnotesaplication.Activities.NavigationActivity;
 import com.guruprasad.tutionnotesaplication.Constants;
+import com.guruprasad.tutionnotesaplication.CustomDialog;
 import com.guruprasad.tutionnotesaplication.R;
 import com.guruprasad.tutionnotesaplication.databinding.ActivityLoginBinding;
 
@@ -86,7 +87,11 @@ public class LoginActivity extends AppCompatActivity {
 
         savedata(email,password);
 
-        login(email,password);
+        CustomDialog dialog = new CustomDialog(LoginActivity.this);
+        dialog.setText("Logging User");
+        dialog.show();
+
+        login(email,password , dialog);
     }
 
     private void savedata(String email, String password) {
@@ -99,10 +104,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void login(String email , String password) {
-
-        ProgressDialog pd = Constants.progress_dialog(LoginActivity.this,"Please Wait","Logging User");
-        pd.show();
+    private void login(String email , String password , CustomDialog dialog) {
 
         auth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -112,12 +114,12 @@ public class LoginActivity extends AppCompatActivity {
                     Constants.success(LoginActivity.this,"Login Successful");
                     startActivity(new Intent(LoginActivity.this, NavigationActivity.class));
                     finish();
-                    pd.dismiss();
+                    dialog.dismiss();
                 }
                 else
                 {
                     Constants.error(LoginActivity.this,"Failed to login user : "+task.getException().getMessage());
-                    pd.dismiss();
+                    dialog.dismiss();
                 }
             }
         });

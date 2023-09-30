@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.ktx.Firebase;
 import com.guruprasad.tutionnotesaplication.Constants;
+import com.guruprasad.tutionnotesaplication.CustomDialog;
 import com.guruprasad.tutionnotesaplication.Models.UserModel;
 import com.guruprasad.tutionnotesaplication.R;
 import com.guruprasad.tutionnotesaplication.databinding.ActivitySignUpBinding;
@@ -96,9 +97,9 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void signup( String name , String phone , String email , String password  ) {
 
-        ProgressDialog pd = Constants.progress_dialog(SignUpActivity.this,"Please Wait" , "Creating new Account");
-        pd.show();
-
+        CustomDialog dialog = new CustomDialog(SignUpActivity.this);
+       // dialog.title("Creating new Account");
+        dialog.show();
         auth.createUserWithEmailAndPassword(email,password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -111,20 +112,20 @@ public class SignUpActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onSuccess(Void unused) {
                                                      Constants.success(SignUpActivity.this,"User Account Successfully Created");
-                                                     pd.dismiss();
+                                                     dialog.dismiss();
                                                 }
                                             }).addOnFailureListener(new OnFailureListener() {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
                                                 Constants.error(SignUpActivity.this,"Failed to Create Account : "+e.getMessage());
-                                                pd.dismiss();
+                                                dialog.dismiss();
                                         }
                                     });
                         }
                         else
                         {
                             Constants.error(SignUpActivity.this,"Failed to create account : "+task.getException().getMessage());
-                            pd.dismiss();
+                            dialog.dismiss();
                         }
                     }
                 });

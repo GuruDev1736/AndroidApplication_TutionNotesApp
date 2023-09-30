@@ -32,6 +32,7 @@ import com.google.firebase.storage.UploadTask;
 import com.guruprasad.tutionnotesaplication.Adapters.EditNoteRecyclerAdapter;
 import com.guruprasad.tutionnotesaplication.Adapters.SeeNoteAdapter;
 import com.guruprasad.tutionnotesaplication.Constants;
+import com.guruprasad.tutionnotesaplication.CustomDialog;
 import com.guruprasad.tutionnotesaplication.Models.NoteDataModel;
 import com.guruprasad.tutionnotesaplication.Models.NoteModel;
 import com.guruprasad.tutionnotesaplication.R;
@@ -80,8 +81,9 @@ public class EditNoteActivity extends AppCompatActivity {
 
         assert noteId != null;
 
-        ProgressDialog pd = Constants.progress_dialog(EditNoteActivity.this,"Please Wait","Fetching Details....");
-        pd.show();
+        CustomDialog dialog = new CustomDialog(EditNoteActivity.this);
+      //  dialog.title("Loading Data");
+        dialog.show();
 
         binding.progressbar.setVisibility(View.VISIBLE);
         database.getReference().child("Notes").child(auth.getCurrentUser().getUid()).child(noteId).addValueEventListener(new ValueEventListener() {
@@ -93,14 +95,14 @@ public class EditNoteActivity extends AppCompatActivity {
                 {
                     binding.title.setText(model.getTitle());
                     binding.note.setText(model.getNote());
-                    pd.dismiss();
+                    dialog.dismiss();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Constants.error(EditNoteActivity.this,"Failed to fetch the details : "+error.getMessage());
-                pd.dismiss();
+                dialog.dismiss();
             }
         });
 
@@ -186,8 +188,9 @@ public class EditNoteActivity extends AppCompatActivity {
                     return;
                 }
 
-                ProgressDialog pd = Constants.progress_dialog(EditNoteActivity.this,"Please Wait","Updating note...");
-                pd.show();
+                CustomDialog dialog1 = new CustomDialog(EditNoteActivity.this);
+               // dialog1.title("Updating Notes");
+                dialog1.show();
 
                 HashMap<String,Object> map = new HashMap<>();
                 map.put("title",title);
@@ -201,12 +204,12 @@ public class EditNoteActivity extends AppCompatActivity {
                                 if (task.isSuccessful())
                                 {
                                     Constants.success(EditNoteActivity.this,"Note updated successfully");
-                                    pd.dismiss();
+                                    dialog1.dismiss();
                                 }
                                 else
                                 {
                                     Constants.error(EditNoteActivity.this,"Failed to update note : "+task.getException().getMessage());
-                                    pd.dismiss();
+                                    dialog1.dismiss();
                                 }
                             }
                         });
@@ -231,8 +234,9 @@ public class EditNoteActivity extends AppCompatActivity {
                 filename = getFileName(file);
                 uniqueKey = UUID.randomUUID().toString();
 
-                ProgressDialog pd = Constants.progress_dialog(EditNoteActivity.this,"Please Wait" , "Uploading PDF...");
-                pd.show();
+                CustomDialog dialog = new CustomDialog(EditNoteActivity.this);
+                //dialog.title("Updating PDF");
+                dialog.show();
 
                 final StorageReference reference= storage.getReference().child("Attachments").child(auth.getCurrentUser().getUid()).child(filename);
                 reference.putFile(file).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -253,14 +257,14 @@ public class EditNoteActivity extends AppCompatActivity {
                                             @Override
                                             public void onSuccess(Void unused) {
                                                 Constants.success(EditNoteActivity.this,"File Uploaded Successfully");
-                                                pd.dismiss();
+                                                dialog.dismiss();
 
                                             }
                                         }).addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
                                                 Constants.error(EditNoteActivity.this,"Unable to upload file : "+e.getMessage());
-                                                pd.dismiss();
+                                                dialog.dismiss();
                                             }
                                         });
 
@@ -269,7 +273,7 @@ public class EditNoteActivity extends AppCompatActivity {
                             @Override
                             public void onFailure(@NonNull Exception e) {
                                 Constants.error(EditNoteActivity.this,"Unable to upload file : "+e.getMessage());
-                                pd.dismiss();
+                                dialog.dismiss();
                             }
                         });
                     }
@@ -277,7 +281,7 @@ public class EditNoteActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Constants.error(EditNoteActivity.this,"Unable to upload file : "+e.getMessage());
-                        pd.dismiss();
+                        dialog.dismiss();
                     }
                 });
 

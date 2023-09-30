@@ -24,6 +24,7 @@ import com.google.firebase.ktx.Firebase;
 import com.guruprasad.tutionnotesaplication.Activities.NavigationActivity;
 import com.guruprasad.tutionnotesaplication.Adapters.NoteAdapter;
 import com.guruprasad.tutionnotesaplication.Constants;
+import com.guruprasad.tutionnotesaplication.CustomDialog;
 import com.guruprasad.tutionnotesaplication.Models.NoteDataModel;
 import com.guruprasad.tutionnotesaplication.Models.NoteModel;
 import com.guruprasad.tutionnotesaplication.R;
@@ -113,7 +114,10 @@ public class CreateNoteActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                ProgressDialog pd = Constants.progress_dialog(CreateNoteActivity.this,"Please Wait","Uploading your note");
+                CustomDialog dialog = new CustomDialog(CreateNoteActivity.this);
+                //dialog.title("Creating New Note");
+                dialog.show();
+
 
                 String title = binding.title.getText().toString();
                 String note = binding.note.getText().toString();
@@ -129,7 +133,7 @@ public class CreateNoteActivity extends AppCompatActivity {
                     return;
                 }
 
-                pd.show();
+                dialog.show();
 
                 NoteDataModel model  = new NoteDataModel(title,note,UniqueKey,UserId);
                 database.getReference().child("Notes").child(UserId).child(UniqueKey).setValue(model)
@@ -140,12 +144,12 @@ public class CreateNoteActivity extends AppCompatActivity {
                                 {
                                     Constants.success(CreateNoteActivity.this,"Note Created Successfully");
                                     binding.create.setVisibility(View.INVISIBLE);
-                                    pd.dismiss();
+                                    dialog.dismiss();
                                 }
                                 else
                                 {
                                     Constants.error(CreateNoteActivity.this,"Failed to create Note : "+task.getException().getMessage());
-                                    pd.dismiss();
+                                    dialog.dismiss();
                                 }
                             }
                         });

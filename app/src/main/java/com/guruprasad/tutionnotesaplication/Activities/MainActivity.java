@@ -30,39 +30,32 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         new Handler().postDelayed(new Runnable() {
-            @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
+            @RequiresApi(api = Build.VERSION_CODES.TIRAMISU) // Replace with your desired API level
             @Override
             public void run() {
-
-                Dexter.withContext(MainActivity.this).withPermissions(
-                        Manifest.permission.CAMERA,
-                        Manifest.permission.INTERNET,
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.POST_NOTIFICATIONS,
-                        Manifest.permission.CALL_PHONE
-                ).withListener(new MultiplePermissionsListener() {
-                    @Override
-                    public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
-                            startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                            finish();
-
-                    }
-
-                    @Override
-                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> list, PermissionToken permissionToken) {
-                            permissionToken.continuePermissionRequest();
-                    }
-                }).check();
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                        finish();
+//                Dexter.withContext(MainActivity.this).withPermissions(
+//                        Manifest.permission.CAMERA,
+//                        Manifest.permission.INTERNET,
+//                        Manifest.permission.READ_EXTERNAL_STORAGE,
+//                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+//                        Manifest.permission.POST_NOTIFICATIONS,
+//                        Manifest.permission.CALL_PHONE
+//                ).withListener(new MultiplePermissionsListener() {
+//                    @Override
+//                    public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
+//                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+//                        finish();
+//                    }
+//
+//                    @Override
+//                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> list, PermissionToken permissionToken) {
+//                        permissionToken.continuePermissionRequest();
+//                    }
+//                }).check();
 
             }
-        },1000);
-
-
-
-
-
-
-
+        }, 1000);
     }
 }

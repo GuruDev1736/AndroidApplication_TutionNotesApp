@@ -19,6 +19,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.ktx.Firebase;
 import com.guruprasad.tutionnotesaplication.Adapters.NotesRecyclerViewAdapter;
 import com.guruprasad.tutionnotesaplication.Constants;
+import com.guruprasad.tutionnotesaplication.CustomDialog;
 import com.guruprasad.tutionnotesaplication.Models.NoteDataModel;
 import com.guruprasad.tutionnotesaplication.databinding.FragmentHomeBinding;
 
@@ -28,7 +29,7 @@ public class CreateNoteFragment extends Fragment {
     private NotesRecyclerViewAdapter adapter ;
     FirebaseDatabase database;
     FirebaseAuth auth ;
-    private ProgressDialog pd ;
+    private CustomDialog pd ;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -40,7 +41,8 @@ public class CreateNoteFragment extends Fragment {
         database = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
 
-        pd = Constants.progress_dialog(getContext() , "Please Wait" , "Fetching Data...");
+        pd = new CustomDialog(getContext());
+       // pd.title("Loading Data");
         pd.show();
 
         binding.create.setOnClickListener(new View.OnClickListener() {
