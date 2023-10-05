@@ -102,6 +102,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
+                android:backgroundTint="@color/primary"
                 android:layout_margin="20dp"
                 android:text="Create Note"/>
         </LinearLayout>

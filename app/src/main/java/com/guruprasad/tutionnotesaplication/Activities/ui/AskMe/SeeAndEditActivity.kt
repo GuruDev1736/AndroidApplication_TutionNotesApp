@@ -19,6 +19,7 @@ import com.guruprasad.tutionnotesaplication.Models.QuestionModel
 import com.guruprasad.tutionnotesaplication.R
 import com.guruprasad.tutionnotesaplication.databinding.ActivitySeeAndEditBinding
 import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 import java.util.Objects
 
 private lateinit var binding:ActivitySeeAndEditBinding
@@ -40,7 +41,7 @@ class SeeAndEditActivity : AppCompatActivity() {
 
 
         binding.actionbar.back.setOnClickListener {
-            onBackPressed()
+            finish()
         }
         binding.actionbar.files.visibility = View.GONE
         binding.actionbar.options.visibility = View.GONE
@@ -77,7 +78,9 @@ class SeeAndEditActivity : AppCompatActivity() {
         binding.update.visibility = View.VISIBLE
 
         binding.actionbar.activityName.setText("Edit Question")
-        val updateTime:String = LocalTime.now().toString()
+        val currentTime: LocalTime? = LocalTime.now()
+        val formater = DateTimeFormatter.ofPattern("hh:mm a")
+        val formatted = currentTime!!.format(formater)
 
 
         val listener = object :ValueEventListener{
@@ -107,7 +110,7 @@ class SeeAndEditActivity : AppCompatActivity() {
 
                         val data:HashMap<String,Any> = HashMap()
                         data.put("question", binding.query.text.toString())
-                        data.put("updatedTime",updateTime)
+                        data.put("updatedTime",formatted)
 
                         reference.updateChildren(data).addOnSuccessListener {
                             database.reference.child("Questions").child(questionId).updateChildren(data)

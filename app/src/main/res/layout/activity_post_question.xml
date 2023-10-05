@@ -53,7 +53,11 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_gravity="center"
-        android:layout_margin="20dp"
+        android:backgroundTint="@color/primary"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
         android:text="Submit" />
 
     <com.google.android.material.textview.MaterialTextView

@@ -31,6 +31,7 @@ import com.guruprasad.tutionnotesaplication.Models.QuestionModel
 import com.guruprasad.tutionnotesaplication.databinding.ActivityPostQuestionBinding
 import es.dmoral.toasty.Toasty
 import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 import java.util.UUID
 
 class PostQuestionActivity : AppCompatActivity() {
@@ -101,13 +102,15 @@ class PostQuestionActivity : AppCompatActivity() {
     private fun Upload(question: String) {
 
         val UID: String = UUID.randomUUID().toString()
-        val currentTime: String = LocalTime.now().toString()
+        val currentTime: LocalTime? = LocalTime.now()
+        val formater = DateTimeFormatter.ofPattern("hh:mm a")
+        val formatted = currentTime!!.format(formater)
         val dialog :CustomDialog = CustomDialog(this@PostQuestionActivity)
         dialog.show()
         //dialog.title("Uploading Question")
 
 
-                val model: QuestionModel = QuestionModel(userId.currentUser!!.uid, question, UID, currentTime)
+                val model: QuestionModel = QuestionModel(userId.currentUser!!.uid, question, UID, formatted)
                 database.reference.child("Questions").child(UID).setValue(model)
                         .addOnSuccessListener {
 
