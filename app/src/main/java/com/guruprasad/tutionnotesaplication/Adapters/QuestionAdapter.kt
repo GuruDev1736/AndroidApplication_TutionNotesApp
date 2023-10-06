@@ -1,6 +1,7 @@
 package com.guruprasad.tutionnotesaplication.Adapters
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
+import com.guruprasad.tutionnotesaplication.Activities.ui.AskMe.AnswerActivity
 import com.guruprasad.tutionnotesaplication.Constants
 import com.guruprasad.tutionnotesaplication.Models.QuestionModel
 import com.guruprasad.tutionnotesaplication.Models.UserModel
@@ -53,6 +55,26 @@ open class QuestionAdapter(options: FirebaseRecyclerOptions<QuestionModel> , con
             }
         }
         database.reference.child("Users").child(model.userId).addValueEventListener(listener)
+
+        holder.answer.setOnClickListener {
+            holder.itemView.context.startActivity(Intent(holder.itemView.context,AnswerActivity::class.java)
+                    .putExtra("questionId",model.questionId))
+        }
+
+        holder.see.setOnClickListener {
+
+        }
+        holder.report.setOnClickListener {
+
+        }
+
+
+
+
+
+
+
+
     }
     class onviewholder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
