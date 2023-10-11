@@ -17,6 +17,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
 import com.guruprasad.tutionnotesaplication.Activities.ui.AskMe.AnswerActivity
+import com.guruprasad.tutionnotesaplication.Activities.ui.AskMe.SeeQuestionActivity
 import com.guruprasad.tutionnotesaplication.Constants
 import com.guruprasad.tutionnotesaplication.Models.QuestionModel
 import com.guruprasad.tutionnotesaplication.Models.UserModel
@@ -62,6 +63,8 @@ open class QuestionAdapter(options: FirebaseRecyclerOptions<QuestionModel> , con
         }
 
         holder.see.setOnClickListener {
+            holder.itemView.context.startActivity(Intent(holder.itemView.context,SeeQuestionActivity::class.java)
+                .putExtra("questionId",model.questionId))
 
         }
         holder.report.setOnClickListener {

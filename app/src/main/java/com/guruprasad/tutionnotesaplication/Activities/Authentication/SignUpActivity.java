@@ -112,6 +112,8 @@ public class SignUpActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onSuccess(Void unused) {
                                                      Constants.success(SignUpActivity.this,"User Account Successfully Created");
+                                                     startActivity(new Intent(SignUpActivity.this,LoginActivity.class));
+                                                     finish();
                                                      dialog.dismiss();
                                                 }
                                             }).addOnFailureListener(new OnFailureListener() {

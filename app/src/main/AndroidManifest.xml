@@ -33,10 +33,10 @@
         android:theme="@style/Theme.TutionNotesAplication"
         tools:targetApi="tiramisu">
         <activity
-            android:name=".Activities.ui.AskMe.AnswerActivity"
+            android:name=".Activities.ui.AskMe.SeeQuestionActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.Authentication.ForgotPasswordActivity"
+            android:name=".Activities.ui.AskMe.AnswerActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.ui.AskMe.SeeAndEditActivity"
