@@ -1,5 +1,6 @@
 package com.guruprasad.tutionnotesaplication.Adapters
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
@@ -28,6 +29,7 @@ open class UserQuestionAdapter(options: FirebaseRecyclerOptions<QuestionModel> ,
     private lateinit var auth:FirebaseAuth
 
 
+    @SuppressLint("SuspiciousIndentation")
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): onviewholder {
      val view:View = LayoutInflater.from(parent.context).inflate(R.layout.userquestionlayout,parent,false);
         return onviewholder(view)
@@ -85,8 +87,8 @@ open class UserQuestionAdapter(options: FirebaseRecyclerOptions<QuestionModel> ,
         dialogbuilder.setPositiveButton("YES",yes)
         dialogbuilder.setNegativeButton("NO",No)
 
-        val dialog:androidx.appcompat.app.AlertDialog = dialogbuilder.create()
-        dialog.show()
+            val dialog:androidx.appcompat.app.AlertDialog = dialogbuilder.create()
+            dialog.show()
 
     }
 

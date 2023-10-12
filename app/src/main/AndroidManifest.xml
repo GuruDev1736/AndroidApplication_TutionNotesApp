@@ -33,6 +33,9 @@
         android:theme="@style/Theme.TutionNotesAplication"
         tools:targetApi="tiramisu">
         <activity
+            android:name=".Activities.ui.AskMe.SeeAnswerActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activities.ui.AskMe.SeeQuestionActivity"
             android:exported="false" />
         <activity

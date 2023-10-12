@@ -1,15 +1,19 @@
 package com.guruprasad.tutionnotesaplication.Adapters
 
 import android.content.Context
+import android.content.DialogInterface
+import android.content.DialogInterface.OnClickListener
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textview.MaterialTextView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -19,7 +23,9 @@ import com.google.firebase.database.ktx.getValue
 import com.guruprasad.tutionnotesaplication.Activities.ui.AskMe.AnswerActivity
 import com.guruprasad.tutionnotesaplication.Activities.ui.AskMe.SeeQuestionActivity
 import com.guruprasad.tutionnotesaplication.Constants
+import com.guruprasad.tutionnotesaplication.CustomDialog
 import com.guruprasad.tutionnotesaplication.Models.QuestionModel
+import com.guruprasad.tutionnotesaplication.Models.ReportQuestionModel
 import com.guruprasad.tutionnotesaplication.Models.UserModel
 import com.guruprasad.tutionnotesaplication.R
 
@@ -67,7 +73,13 @@ open class QuestionAdapter(options: FirebaseRecyclerOptions<QuestionModel> , con
                 .putExtra("questionId",model.questionId))
 
         }
+
         holder.report.setOnClickListener {
+
+          report(holder.itemView.context ,model )
+
+
+
 
         }
 
@@ -77,6 +89,54 @@ open class QuestionAdapter(options: FirebaseRecyclerOptions<QuestionModel> , con
 
 
 
+
+    }
+
+    private fun report(context: Context , model: QuestionModel){
+
+
+        val reason:EditText = EditText(context)
+        val dialogBuilder:MaterialAlertDialogBuilder = Constants.dialog(context,"Report","Are you sure you want to report the question")
+        val yes = object :OnClickListener{
+            override fun onClick(dialog: DialogInterface?, which: Int) {
+                val reason:String = reason.text.toString()
+
+                if (reason.isNullOrEmpty())
+                {
+                    Constants.error(context,"Please enter the valid reason to report the question")
+                    return
+                }
+
+                val dialog:CustomDialog = CustomDialog(context)
+                dialog.show()
+
+                val report:ReportQuestionModel = ReportQuestionModel(model.userId,model.questionId,model.question,reason)
+                database.reference.child("QuestionReport").child(model.questionId).child(model.userId).setValue(report)
+                    .addOnCompleteListener{task->
+                        if (task.isSuccessful)
+                        {
+                            Constants.success(context,"Your report has submitted , We will take action as soon as possible")
+                            dialog.dismiss()
+                        }
+                        else
+                        {
+                            Constants.error(context,"Failed to report the question : "+ task.exception!!.message)
+                            dialog.dismiss()
+                        }
+                    }
+            }
+        }
+
+        val no = object :OnClickListener{
+            override fun onClick(dialog: DialogInterface?, which: Int) {
+                dialog!!.cancel()
+            }
+        }
+        dialogBuilder.setPositiveButton("YES",yes)
+            .setNegativeButton("NO",no)
+            .setView(reason)
+        val dialog:androidx.appcompat.app.AlertDialog = dialogBuilder.create()
+        dialog.show()
 
     }
     class onviewholder(itemView: View) : RecyclerView.ViewHolder(itemView) {
